@@ -34,3 +34,38 @@
 	"utils.h"
 	"algoritmo.h"
 
+1452396392 source:c:\users\surface\documents\github\iia2017\tp2_iia trepa-colinas 2016\algoritmo.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	"algoritmo.h"
+	"funcao.h"
+	"utils.h"
+
+1452390209 c:\users\surface\documents\github\iia2017\tp2_iia trepa-colinas 2016\algoritmo.h
+
+1452390209 c:\users\surface\documents\github\iia2017\tp2_iia trepa-colinas 2016\funcao.h
+
+1452390209 c:\users\surface\documents\github\iia2017\tp2_iia trepa-colinas 2016\utils.h
+
+1452390636 source:c:\users\surface\documents\github\iia2017\tp2_iia trepa-colinas 2016\funcao.c
+	<stdio.h>
+	<stdlib.h>
+	"algoritmo.h"
+
+1452396440 source:c:\users\surface\documents\github\iia2017\tp2_iia trepa-colinas 2016\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"utils.h"
+	"algoritmo.h"
+
+1452396853 source:c:\users\surface\documents\github\iia2017\tp2_iia trepa-colinas 2016\utils.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"algoritmo.h"
+	"utils.h"
+
