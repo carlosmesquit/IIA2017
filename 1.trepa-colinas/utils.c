@@ -5,50 +5,51 @@
 #include "algoritmo.h"
 #include "utils.h"
 
-int* init_dados(char *nome, int *vert)
+float *init_dados(char *nome, int *vert) // TESTADO
 {
-	int *matriz;
-	int linha = 0, coluna = 0;
-	char buffer[255];
-	char primeira[2];
-	FILE *f;
+    float *matriz, temp=2;
+    int i, j;
+    char buffer[255];
+    FILE *f;
 
-	f = fopen(nome, "rt");
-	if (!f)
-	{
-		printf("Erro ao abrir ficheiro!\n");
-		exit(1);
-	}
+    f = fopen(nome, "rt");
+    if (!f)
+    {
+        printf("Erro ao abrir ficheiro!\n");
+        exit(1);
+    }
 
-	while (fgets(buffer, 255, f) != NULL)
-	{
-		sscanf(buffer, "%s", primeira);
+    if (!fgets(buffer, 255, f))
+    {
+        printf("Erro ao ler o ficheiro!\n");
+        exit(2);
+    }
 
-		if (!strcmp(primeira, "p"))
-        {
-			sscanf(buffer, "p edge %d", vert);
-			// ALOCAR MEMÓRIA PARA A MATRIZ
-			matriz = malloc(sizeof(int)*(*vert)*(*vert));
-			if (!matriz)
-			{
-				printf("Erro na alocacao de memoria\n");
-				exit(1);
-			}
+    if (sscanf(buffer, "%d", vert) == EOF && *vert <= 0)
+    { // Obter número de elementos
+        printf("Número de elementos inválido!\n");
+        exit(3);
+    }
 
-			// PREENCHER A MATRIZ COM ZEROS
-			memset(matriz, 0, sizeof(int)*(*vert)*(*vert));
-		}
+    // ALOCAR MEMÓRIA PARA A MATRIZ
+    matriz = malloc(sizeof(float) * (*vert) * (*vert));
+    if (!matriz)
+    {
+        printf("Erro na alocacao de memoria!\n");
+        exit(4);
+    }
 
-		if (!strcmp(primeira, "e"))
-        {
-			sscanf(buffer, "e %d %d",&linha, &coluna);
-			// PREENCHE MATRIZ
-			*((int *)matriz + (linha - 1) * (*vert) + (coluna - 1)) = 1;
-			*((int *)matriz + (coluna - 1) * (*vert) + (linha - 1)) = 1;
-		}
-	}
-	fclose(f);
-	return matriz;
+    // PREENCHER A MATRIZ COM ZEROS
+    //memset(matriz, 0, sizeof(float)*(*vert)*(*vert)); // TODO: verificar se é necessário
+
+    while (fgets(buffer, 255, f) != NULL)
+    {
+        sscanf(buffer, "%d %d %f", &i, &j, &temp);
+        *(matriz + j - 1 + (i - 1) * (*vert)) = temp;
+    }
+
+    fclose(f);
+    return matriz;
 }
 
 void gera_sol_inicial(int *sol, int v)

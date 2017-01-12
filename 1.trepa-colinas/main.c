@@ -14,7 +14,7 @@ int main()
 	int *solucao, *melhor_solucao;
 	int fitness, melhor_fitness;
 	int num_iteracoes=100; // IR ALTERANDO
-	int i, num_vertices;
+	int i, num_vertices=0;
 
 	printf("Qual o Nome do Ficheiro?");
 	gets(nome_ficheiro);
