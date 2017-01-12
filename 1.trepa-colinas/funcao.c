@@ -1,39 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "algoritmo.h"
 
-int calcula_fit(int sol[], int *mat, int vert)
+#include "funcao.h"
+
+float calcula_fit(int *sol, float *matriz, int n_elementos, int m)
 {
-	int i, j, ligados=0, nao_ligados=0, fitness=0;
+	int i, j, origem, destino;
+	float fitness = 0, temp, res;
 
-	for (i = 0; i < vert; i++)
-    {
-		for (j = 0; j < vert; j++)
-    {
-			if (i != j)
-			{
-				if (sol[i] == 1 && sol[j] == 1)
-				{
-					if (*((int *)mat + i * vert + j) == 1)
-					{
-						ligados++;
-					}
-					else
-					{
-						nao_ligados++;
-					}
-				}
-			}
+	for(i = 0; i < m - 1; i++) {
+		for (j = i + 1; j < m; j++) {	
+			temp = *(matriz + sol[j] + sol[i] * n_elementos);
+			printf("%d %d %f\n", sol[i]+1, sol[j]+1, temp);
+			fitness += temp;
 		}
 	}
 
-	if (nao_ligados > 0) // SE HOUVER NÃO LIGADOS
-    {
-		fitness -= nao_ligados/2;
-	}
-	else // SE NÃO
-	{
-		fitness += ligados/2;
-	}
-	return fitness;
+	res = fitness / m;
+
+	if(fitness != 0)
+		return res;
+
+	return 0;
 }

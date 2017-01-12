@@ -1,0 +1,37 @@
+# depslib dependency file v1.0
+1484250952 source:c:\users\danie\documents\github\iia2017\1.trepa-colinas\funcao.c
+	<stdio.h>
+	<stdlib.h>
+	"funcao.h"
+
+1484248983 c:\users\danie\documents\github\iia2017\1.trepa-colinas\funcao.h
+
+1484249982 source:c:\users\danie\documents\github\iia2017\1.trepa-colinas\utils.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"utils.h"
+
+1484245707 c:\users\danie\documents\github\iia2017\1.trepa-colinas\utils.h
+
+1484252205 source:c:\users\danie\documents\github\iia2017\1.trepa-colinas\algoritmo.c
+	<stdio.h>
+	<stdlib.h>
+	"definicoes.h"
+	"algoritmo.h"
+	"funcao.h"
+	"utils.h"
+
+1484251696 c:\users\danie\documents\github\iia2017\1.trepa-colinas\definicoes.h
+
+1484250248 c:\users\danie\documents\github\iia2017\1.trepa-colinas\algoritmo.h
+
+1484252301 source:c:\users\danie\documents\github\iia2017\1.trepa-colinas\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"definicoes.h"
+	"utils.h"
+	"algoritmo.h"
+

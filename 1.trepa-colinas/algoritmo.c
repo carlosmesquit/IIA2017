@@ -1,94 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+
+#include "definicoes.h"
 #include "algoritmo.h"
 #include "funcao.h"
 #include "utils.h"
 
-void repara(int *sol, int *mat, int vert)
+float trepa_colinas(int *sol, float *matriz, int n_elementos, int *m)
 {
-	int i, j;
-    float aux;
+    int *nova_sol, i, m_novo;
+	float fitness = 0, fitness_novo = 0;
 
-	for (i = 0; i < vert; i++)
-        {
-		for (j = 0; j < vert; j++)
-		{
-			if (i != j)
-			{
-				if (sol[i] == 1 && sol[j] == 1)
-				{
-					if (*((int *)mat + i * vert + j) != 1)
-					{
-						aux = random_l_h(0, 1);
-						if (aux == 0)
-						{
-							sol[i] = 0;
-						}
-						else
-						{
-							sol[j] = 0;
-						}
-						i = j = 0;
-					}
-				}
-			}
-		}
-	}
-}
-
-void gera_vizinho(int sol[], int vizinho[], int vert_tot)
-{
-	int i;
-	int pos;
-
-	for (i = 0; i<vert_tot; i++)
+    //  Alocar memória para a nova solução com o número máximo de n_elementosentos
+    nova_sol = malloc(sizeof(int) * n_elementos);
+    if (nova_sol == NULL)
     {
-		vizinho[i] = sol[i];
+		printf("Erro na alocacao de memoria.\n");
+		exit(1);
     }
 
-	pos = random_l_h(0, vert_tot - 1);
-	vizinho[pos] = !vizinho[pos];
-}
+    // Calcular fitness da solução inicial
+    fitness = calcula_fit(sol, matriz, n_elementos, *m);
 
-int trepa_colinas(int sol[], int *mat, int vert, int num_iter)
-{
-	int *nova_sol, fitness=0, fitness_viz=0, i;
+    for (i = 0; i < NUM_ITERACOES; i++) {
+		// Gerar Solucao
+		m_novo = gerar_solucao(nova_sol, n_elementos);
+		fitness_novo = calcula_fit(nova_sol, matriz, n_elementos, m_novo);
 
-    // ALOCAR MEM�RIA
-	nova_sol = malloc(sizeof(int)*vert);
-	// VERIFICA SE ALOCA��O DE MEMORIA CORREU BEM
-	if (nova_sol == NULL)
-	{
-		printf("Erro na alocacao de memoria");
-		exit(1);
-	}
-
-	// CALCULA FITNESS DA SOLUCAO INICIAL
-	fitness = calcula_fit(sol, mat, vert);
-
-	for (i = 0; i < num_iter; i++) {
-        //GERA VIZINHO
-		gera_vizinho(sol, nova_sol, vert);
-		// CALCULA FITNESS DO VIZINHO
-		fitness_viz = calcula_fit(nova_sol, mat, vert);
-
-		// TENTA REPARAR O VIZINHO SE O FITNESS FOR NEGATIVO
-		if (fitness_viz < 0) {
-			repara(nova_sol, mat, vert);
-			fitness_viz = calcula_fit(nova_sol, mat, vert);
-		}
-
-		// SE O VIZINHO TIVER MELHOR FITNESS SUBSTITUI
-		if (fitness_viz > fitness)
+		// Se a nova solução tiver melhor fitness
+		if (fitness_novo >= 0 && fitness_novo > fitness)
 		{
-			substitui(sol, nova_sol, vert);
-			fitness = fitness_viz;
+			fitness = fitness_novo;
+			*m = m_novo;
+			substitui(sol, nova_sol, m_novo);
 		}
 	}
 
-    // LIBERTA MEM�RIA ALOCADA
-	free(nova_sol);
+    // LIBERTA MEMÓRIA ALOCADA
+    free(nova_sol);
 
-	return fitness;
+    return fitness;
 }

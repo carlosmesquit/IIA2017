@@ -1,2 +1,1 @@
-int calcula_fit(int a[], int *mat, int vert);
-
+float calcula_fit(int *sol, float *matriz, int n_elementos, int m);

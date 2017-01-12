@@ -1,81 +1,79 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
+
+#include "definicoes.h"
 #include "utils.h"
 #include "algoritmo.h"
 
-#define DEFAULT_RUNS 20
-
-int main()
+int main(int argc, char *argv[])
 {
-	char nome_ficheiro[50];
-	int *mat_adjacencias;
-	int *solucao, *melhor_solucao;
-	int fitness, melhor_fitness;
-	int num_iteracoes=100; // IR ALTERANDO
-	int i, num_vertices=0;
+    char nome_ficheiro[50];
+    int i, j, n_elementos = 0;
+    int m, melhor_m;
+    int *solucao, *melhor_solucao;
+    float fitness, melhor_fitness;
+    float *matriz;
 
-	printf("Qual o Nome do Ficheiro?");
-	gets(nome_ficheiro);
+    printf("Qual o Nome do Ficheiro?\n");
+    gets(nome_ficheiro);
 
-	// INICIALIZA O GERADOR DE N�MEROS ALEAT�RIOS
-	init_rand();
+    init_rand();
 
-	// PASSA DADOS DO FICHEIRO PARA A MATRIZ DE ADJAC�NCIAS
-	mat_adjacencias = init_dados(nome_ficheiro, &num_vertices);
+    // Obter dados do ficheiro
+    matriz = init_dados(nome_ficheiro, &n_elementos);
 
-	// AlOCA MEM�RIA PARA SOLUC�O
-	solucao = malloc(sizeof(int)*num_vertices);
-    // VER SE COREU BEM
+    // Alocar memória para a solução atual com o número máximo de elementos
+    solucao = malloc(sizeof(int) * n_elementos);
     if (solucao == NULL)
-	{
-		printf("Erro na alocacao de memoria");
-		exit(1);
-	}
-	// AlOCA MEM�RIA PARA A MELHOR SOLUC�O
-	melhor_solucao = malloc(sizeof(int)*num_vertices);
-    // VER SE COREU BEM
+    {
+        printf("Erro na alocacao de memoria para a solucao atual.\n");
+        exit(1);
+    }
+
+    // Alocar memória para a melhor solução com o número máximo de elementos
+    melhor_solucao = malloc(sizeof(int) * n_elementos);
     if (melhor_solucao == NULL)
-	{
-		printf("Erro na alocacao de memoria");
-		exit(1);
-	}
+    {
+        printf("Erro na alocacao de memoria para a melhor solucao.\n");
+        exit(1);
+    }
 
-	// "ZERAR" AS MATRIZES
-	memset(solucao, 0, sizeof(int)*num_vertices);
-	memset(melhor_solucao, 0, sizeof(int)*num_vertices);
+    memset(solucao, 0, sizeof(int) * n_elementos);
+    memset(melhor_solucao, 0, sizeof(int) * n_elementos);
 
-	for (i = 0; i<DEFAULT_RUNS; i++)
-	{
-		// GERAR SOLUCAO INICIAL
-		gera_sol_inicial(solucao, num_vertices);
+    for (i = 0; i < NUM_EXECUCOES; i++) //
+    {
+        // Gerar Solução Inicial
+        m = gerar_solucao(solucao, n_elementos);
 
-		// ALGORITMO TREPA COLINAS
-		fitness = trepa_colinas(solucao, mat_adjacencias, num_vertices, num_iteracoes);
+        // Aplicar trepa colinas
+        fitness = trepa_colinas(solucao, matriz, n_elementos, &m);
 
-		// MOSTRA RESULTADOS
-		printf("Itera��o: %d\n", i+1);
-		printf("Fitness: %d\n", fitness);
-		escreve_sol(solucao, num_vertices);
+        // Mostar Resultados
+        printf("\nIteracao: %d\n", i + 1);
+        printf("Fitness: %.3f\n", fitness);
+        mostrar_sol(solucao, m);
 
-		// SE ENCONTRA SOLUCAO MELHOR ACTUALIZA
-		if (melhor_fitness<fitness || i==0 )
-		{
-			melhor_fitness= fitness;
-			substitui(melhor_solucao, solucao, num_vertices);
-		}
-	}
-
+        // Se tiver encontrado uma solução melhor
+        if ((fitness >= 0 && fitness > melhor_fitness) || i == 0)
+        {
+            melhor_m = m;
+            melhor_fitness = fitness;
+            substitui(melhor_solucao, solucao, melhor_m);
+        }
+    }
 
     // APRESENTA A SOLUCAO
-    printf("\nA melhor ");
-	escreve_sol(melhor_solucao, num_vertices);
+    printf("\n\nA melhor ");
+    printf("Fitness: %.3f\n", melhor_fitness);
+    mostrar_sol(melhor_solucao, melhor_m);
 
-	// LIBERTAR MEM�RIA ALOCADA
-	free(mat_adjacencias);
-	free(solucao);
-	free(melhor_solucao);
+    // LIBERTAR MEMÓRIA ALOCADA
+    free(matriz);
+    free(solucao);
+    free(melhor_solucao);
 
-	return 0;
+    scanf("%d", &i);
+    return 0;
 }
